@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv  = require('dotenv');
+const { default: mongoose } = require('mongoose');
 dotenv.config()
 
 const app = express();
@@ -9,6 +10,14 @@ app.get('/', (req, res) => {
     res.send('Hello')
 })
 
-app.listen(port, () => {
+mongoose.connect(`mongodb+srv://minhtuan:${process.env.MONGO_DB}@cluster0.j28zdbn.mongodb.net/?retryWrites=true&w=majority`) 
+        .then(() => {
+            console.log('Connected to Mongoose');
+        }) 
+        .catch(err => {
+            console.log(err);
+        })
+
+app.listen(port, () => {   
     console.log(`http://localhost:${port}/`);
 }); 
