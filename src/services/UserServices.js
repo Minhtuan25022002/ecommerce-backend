@@ -99,10 +99,74 @@ const updateUser = async (id, data) => {
     })
 }
 
+const deleteUser = async (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id,
+            })
+            if (checkUser === null) {
+                resolve({
+                    status: 'ERR',
+                    message: 'The user is not defined'
+                })
+            }
+            await User.findByIdAndDelete(id)
+            resolve({
+                status: 'OK',
+                message: 'DELETE USER SUCCESS',
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+const getAllUser = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const allUser = await User.find()
+            resolve({
+                status: 'OK',
+                message: 'SUCCESS',
+                data: allUser
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+const getDetailsUser = async (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findOne({
+                _id: id,
+            })
+            if (user === null) {
+                resolve({
+                    status: 'ERR',
+                    message: 'The user is not defined'
+                })
+            }
+            resolve({
+                status: 'OK',
+                message: 'DETAIL USER SUCCESS',
+                data: user
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
 module.exports = {
     createUser,
     loginUser,
-    updateUser
+    updateUser,
+    deleteUser,
+    getAllUser,
+    getDetailsUser
 }
 
 //khi tách controller ra services như này Nó sẽ giúp mình phân tách code ra, để sau này dự án có lớn lên thì sẽ dễ quản lí

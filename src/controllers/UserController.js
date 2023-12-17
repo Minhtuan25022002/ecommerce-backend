@@ -70,8 +70,55 @@ const updateUser = async (req, res) => {
                 message: 'The userId is required'
             })
         }
-        console.log(userId);  
         const response =  await UserService.updateUser(userId, data)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.id
+        // const token = req.headers
+        if (!userId) {
+            return res.status(200).json({
+                status: 'OK',
+                message: 'The userId is required'
+            })
+        }
+        const response =  await UserService.deleteUser(userId)
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const getAllUser = async (req, res) => {
+    try {
+        const response =  await UserService.getAllUser()
+        return res.status(200).json(response)
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const getDetailsUser = async (req, res) => {
+    try {
+        const userId = req.params.id
+        if (!userId) {
+            return res.status(200).json({
+                status: 'OK',
+                message: 'The userId is required'
+            })
+        }
+        const response =  await UserService.getDetailsUser(userId)
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
@@ -83,5 +130,8 @@ const updateUser = async (req, res) => {
 module.exports = {
     createUser,
     loginUser,
-    updateUser
+    updateUser,
+    deleteUser,
+    getAllUser,
+    getDetailsUser
 }
