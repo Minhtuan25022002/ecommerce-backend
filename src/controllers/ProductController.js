@@ -58,7 +58,8 @@ const detailProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const response =  await ProductServices.getAllProduct()
+        const { limit, page } = req.query
+        const response =  await ProductServices.getAllProduct(Number(limit), Number(page))
         return res.status(200).json(response)
     } catch (e) {
         return res.status(404).json({
