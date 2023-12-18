@@ -4,10 +4,18 @@ const dotenv  = require('dotenv');
 dotenv.config();
 
 const authMiddleware = (req, res, next) => {
-    // console.log('checktoken', req.headers.token);
+    const tokenHeader = req.headers.token;
+
+    if (!tokenHeader) {
+        return res.status(401).json({
+            message: 'Token is missing',
+            status: 'ERROR'
+        });
+    }
     const token = req.headers.token.split(' ')[1]
-    jwt.verify(token, process.env.ACCESS_TOKEN, function(err, user) {
-        if(err) {
+    jwt.verify(token, process.env.ACCESS_TOKEN, function (err, user) {
+        if (err) {
+            console.log(err);
             return res.status(404).json({
                 message: 'The authentication',
                 status: 'ERROR'
